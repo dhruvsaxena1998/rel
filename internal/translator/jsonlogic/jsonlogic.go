@@ -71,6 +71,9 @@ func translateBinaryExpression(left ast.Expression, operator lexer.Token, right 
 			"in": []any{translateExpression(left), translateExpression(right)},
 		}
 
+	case lexer.PLUS, lexer.HYPHEN, lexer.STAR, lexer.SLASH, lexer.PERCENT:
+		result[operator.Literal] = []any{translateExpression(left), translateExpression(right)}
+
 	case lexer.AND, lexer.OR:
 		leftExpr := translateExpression(left)
 		rightExpr := translateExpression(right)

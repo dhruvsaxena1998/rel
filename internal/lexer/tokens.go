@@ -23,6 +23,12 @@ const (
 	NUMBER
 	STRING
 
+	PLUS
+	HYPHEN
+	STAR
+	SLASH
+	PERCENT
+
 	LPAREN
 	RPAREN
 	LBRACE
@@ -121,6 +127,17 @@ func TokenTypeString(tokentype TokenType) string {
 		return "lbracket"
 	case RBRACKET:
 		return "rbracket"
+
+	case PLUS:
+		return "plus"
+	case HYPHEN:
+		return "hyphen"
+	case STAR:
+		return "star"
+	case SLASH:
+		return "slash"
+	case PERCENT:
+		return "percent"
 
 	case ASSIGN:
 		return "assign"

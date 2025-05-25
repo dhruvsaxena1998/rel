@@ -90,6 +90,11 @@ func createTokenLookups() {
 	registerLedHandler(lexer.BETWEEN, relational, parseBetweenExpression)
 
 	// Additive & Multiplicative
+	registerLedHandler(lexer.PLUS, additive, parseBinaryExpression)
+	registerLedHandler(lexer.HYPHEN, additive, parseBinaryExpression)
+	registerLedHandler(lexer.STAR, multiplicative, parseBinaryExpression)
+	registerLedHandler(lexer.SLASH, multiplicative, parseBinaryExpression)
+	registerLedHandler(lexer.PERCENT, multiplicative, parseBinaryExpression)
 
 	// Literals and Symbols
 	registerNudHandler(lexer.NUMBER, parsePrimaryExpression)
