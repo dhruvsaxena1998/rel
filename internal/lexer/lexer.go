@@ -114,7 +114,7 @@ func createLexer(source string) *Lexer {
 			// Skip whitespaces and tabs
 			{regex: regexp.MustCompile(`[\s]+`), handler: skipHandler},
 			// Skip comments
-			{regex: regexp.MustCompile(`\/\/.* `), handler: skipHandler},
+			{regex: regexp.MustCompile(`\/\/[^\n]*`), handler: skipHandler},
 
 			{regex: regexp.MustCompile(`"[^"]*"`), handler: stringHandler},
 			{regex: regexp.MustCompile(`'[^']*'`), handler: stringHandler},
@@ -131,6 +131,12 @@ func createLexer(source string) *Lexer {
 			{regex: regexp.MustCompile(`\}`), handler: defaultHandler(RBRACE, "}")},
 			{regex: regexp.MustCompile(`\(`), handler: defaultHandler(LPAREN, "(")},
 			{regex: regexp.MustCompile(`\)`), handler: defaultHandler(RPAREN, ")")},
+
+			{regex: regexp.MustCompile(`\+`), handler: defaultHandler(PLUS, "+")},
+			{regex: regexp.MustCompile(`\-`), handler: defaultHandler(HYPHEN, "-")},
+			{regex: regexp.MustCompile(`\*`), handler: defaultHandler(STAR, "*")},
+			{regex: regexp.MustCompile(`\/`), handler: defaultHandler(SLASH, "/")},
+			{regex: regexp.MustCompile(`\%`), handler: defaultHandler(PERCENT, "%")},
 
 			{regex: regexp.MustCompile(`===`), handler: defaultHandler(STRICT_EQ, "===")},
 			{regex: regexp.MustCompile(`==`), handler: defaultHandler(EQ, "==")},

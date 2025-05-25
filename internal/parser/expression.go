@@ -62,7 +62,7 @@ func parsePrimaryExpression(p *parser) ast.Expression {
 
 func parseBinaryExpression(p *parser, left ast.Expression, bp bindingPower) ast.Expression {
 	operatorToken := p.advance()
-	right := parseExpression(p, bp)
+	right := parseExpression(p, bp-1)
 
 	return &ast.BinaryExpression{
 		Left:     left,

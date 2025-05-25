@@ -32,8 +32,8 @@
 - [X] between
 - [ ] max
 - [ ] min
-- [ ] Arithmetic (+ - * /)
-- [ ] Modulo (%)
+- [X] Arithmetic (+ - * /)
+- [X] Modulo (%)
 
 ### String Operations
 - [X] in
@@ -55,10 +55,12 @@
 
 
 ## Features
-- [ ] Comments
+- [X] Comments
 - [ ] Multiple operations (translate multiple expressions at once)
-- [ ] Nested Variables Access
+- [X] Nested Variables Access
 - [ ] Assignment
 - [ ] Functions
-    - [ ] Evaluate
+  - [ ] Evaluate
 - [X] `Not In` Operator
+  - [X] Array
+  - [X] String
