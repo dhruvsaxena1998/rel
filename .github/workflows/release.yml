@@ -44,20 +44,38 @@ jobs:
     - name: Build for Windows
       run: GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-windows-amd64.exe ./cmd/cli/main.go
 
+    - name: Generate checksums
+      run: |
+        cd bin
+        sha256sum * > checksums.txt
+
+    - name: Create formatted release body
+      run: |
+        echo "${{ github.event.inputs.release_notes }}" > release_body.md
+        echo "" >> release_body.md
+        echo "## 📦 Downloads" >> release_body.md
+        echo "" >> release_body.md
+        echo "| File | SHA256 |" >> release_body.md
+        echo "|------|--------|" >> release_body.md
+        cd bin
+        while IFS= read -r line; do
+          checksum=$(echo "$line" | cut -d' ' -f1)
+          filename=$(echo "$line" | cut -d' ' -f2-)
+          echo "| \`$filename\` | \`$checksum\` |" >> ../release_body.md
+        done < checksums.txt
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ github.event.inputs.version }}
         name: Release ${{ github.event.inputs.version }}
-        body: ${{ github.event.inputs.release_notes }}
+        body_path: release_body.md
         files: |
           bin/rel-linux-amd64
+          bin/rel-linux-arm64
           bin/rel-darwin-amd64
+          bin/rel-darwin-arm64
           bin/rel-windows-amd64.exe
+          bin/checksums.txt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Generate checksums
-      run: |
-        cd bin
-        sha256sum * > checksums.txt
