@@ -1,0 +1,53 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: REL Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag for the release (e.g., v1.0.0)'
+        required: true
+      release_notes:
+        description: 'Notes for the GitHub Release'
+        required: false
+
+jobs:
+  build:
+    name: Build and Release Go Binary
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.24'
+
+    - name: Build for Linux
+      run: |
+        mkdir -p dist
+        GOOS=linux GOARCH=amd64 go build -o bin/rel-linux-amd64
+
+    - name: Build for macOS
+      run: |
+        GOOS=darwin GOARCH=amd64 go build -o bin/rel-darwin-amd64
+
+    - name: Build for Windows
+      run: |
+        GOOS=windows GOARCH=amd64 go build -o bin/rel-windows-amd64.exe
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        name: Release ${{ github.event.inputs.version }}
+        body: ${{ github.event.inputs.release_notes }}
+        files: |
+          bin/rel-linux-amd64
+          bin/rel-darwin-amd64
+          bin/rel-windows-amd64.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
