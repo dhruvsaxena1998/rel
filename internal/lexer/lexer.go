@@ -134,9 +134,9 @@ func createLexer(source string) *Lexer {
 
 			{regex: regexp.MustCompile(`\+`), handler: defaultHandler(PLUS, "+")},
 			{regex: regexp.MustCompile(`\-`), handler: defaultHandler(HYPHEN, "-")},
-			{regex: regexp.MustCompile(`\*`), handler: defaultHandler(HYPHEN, "*")},
-			{regex: regexp.MustCompile(`\/`), handler: defaultHandler(HYPHEN, "/")},
-			{regex: regexp.MustCompile(`\%`), handler: defaultHandler(HYPHEN, "%")},
+			{regex: regexp.MustCompile(`\*`), handler: defaultHandler(STAR, "*")},
+			{regex: regexp.MustCompile(`\/`), handler: defaultHandler(SLASH, "/")},
+			{regex: regexp.MustCompile(`\%`), handler: defaultHandler(PERCENT, "%")},
 
 			{regex: regexp.MustCompile(`===`), handler: defaultHandler(STRICT_EQ, "===")},
 			{regex: regexp.MustCompile(`==`), handler: defaultHandler(EQ, "==")},

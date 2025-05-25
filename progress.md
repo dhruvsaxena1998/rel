@@ -60,7 +60,7 @@
 - [X] Nested Variables Access
 - [ ] Assignment
 - [ ] Functions
-    - [ ] Evaluate
+  - [ ] Evaluate
 - [X] `Not In` Operator
-    - [X] Array
-    - [X] String
+  - [X] Array
+  - [X] String
