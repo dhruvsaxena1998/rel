@@ -3,6 +3,9 @@
 
 name: REL Release
 
+permissions:
+  contents: write 
+
 on:
   workflow_dispatch:
     inputs:
@@ -27,17 +30,19 @@ jobs:
         go-version: '1.24'
 
     - name: Build for Linux
-      run: |
-        mkdir -p dist
-        GOOS=linux GOARCH=amd64 go build -o bin/rel-linux-amd64
+      run: GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-linux-amd64
+
+    - name: Build for Linux ARM64  
+      run: GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-linux-arm64
 
     - name: Build for macOS
-      run: |
-        GOOS=darwin GOARCH=amd64 go build -o bin/rel-darwin-amd64
+      run: GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-darwin-amd64
+
+    - name: Build for macOS ARM64
+      run: GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-darwin-arm64
 
     - name: Build for Windows
-      run: |
-        GOOS=windows GOARCH=amd64 go build -o bin/rel-windows-amd64.exe
+      run: GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-windows-amd64.exe
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
@@ -51,3 +56,8 @@ jobs:
           bin/rel-windows-amd64.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Generate checksums
+      run: |
+        cd bin
+        sha256sum * > checksums.txt
