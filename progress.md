@@ -64,3 +64,7 @@
 - [X] `Not In` Operator
   - [X] Array
   - [X] String
+
+## Usage
+- [X] CLI
+- [ ] HTTP API Server

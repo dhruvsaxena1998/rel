@@ -1,1 +1,4 @@
-(2 + 3) * 4
+if {
+    @age < 18: 'kid';
+    @age < 55: 'adult;
+} else 'old'

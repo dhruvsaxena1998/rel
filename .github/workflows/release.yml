@@ -30,19 +30,28 @@ jobs:
         go-version: '1.24'
 
     - name: Build for Linux
-      run: GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-linux-amd64 ./cmd/cli/main.go
+      run: |
+        GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-linux-amd64 ./cmd/cli/main.go
+        chmod +x bin/rel-linux-amd64
 
     - name: Build for Linux ARM64
-      run: GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-linux-arm64 ./cmd/cli/main.go
+      run: |
+        GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-linux-arm64 ./cmd/cli/main.go
+        chmod +x bin/rel-linux-arm64
 
     - name: Build for macOS
-      run: GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-darwin-amd64 ./cmd/cli/main.go
+      run: |
+        GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-darwin-amd64 ./cmd/cli/main.go
+        chmod +x bin/rel-darwin-amd64
 
     - name: Build for macOS ARM64
-      run: GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-darwin-arm64 ./cmd/cli/main.go
+      run: |
+        GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o bin/rel-darwin-arm64 ./cmd/cli/main.go
+        chmod +x bin/rel-darwin-arm64
 
     - name: Build for Windows
-      run: GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-windows-amd64.exe ./cmd/cli/main.go
+      run: |
+        GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o bin/rel-windows-amd64.exe ./cmd/cli/main.go
 
     - name: Generate checksums
       run: |
