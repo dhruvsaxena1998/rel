@@ -121,10 +121,13 @@ func parseIfExpression(p *parser) ast.Expression {
 
 	branches := make([]ast.IfBranch, 0)
 
+	p.expect(lexer.LBRACE)
+
 	// Parse the first condition and branch
 	condition := parseExpression(p, defaultBindingPower)
 	p.expect(lexer.COLON)
 	consequent := parseExpression(p, defaultBindingPower)
+	p.expect(lexer.SEMICOLON)
 
 	branches = append(branches, ast.IfBranch{
 		Condition:  condition,
@@ -132,30 +135,27 @@ func parseIfExpression(p *parser) ast.Expression {
 	})
 
 	// Parse additional conditions and branches
-	for p.currentToken().Type == lexer.COMMA {
-		p.advance() // Consume the comma token
-
-		// check if this is the else token
-		if p.currentToken().Type == lexer.ELSE {
-			p.advance() // Consume the else token
-			p.expect(lexer.COLON)
-			elseBranch := parseExpression(p, defaultBindingPower)
-
-			return &ast.IfExpression{
-				Branches: branches,
-				Else:     elseBranch,
-			}
-		}
-
-		// Otherwise, it's another condition branch
+	for p.currentToken().Type != lexer.RBRACE {
 		condition := parseExpression(p, defaultBindingPower)
 		p.expect(lexer.COLON)
 		consequent := parseExpression(p, defaultBindingPower)
+		p.expect(lexer.SEMICOLON)
 
 		branches = append(branches, ast.IfBranch{
 			Condition:  condition,
 			Consequent: consequent,
 		})
+	}
+
+	p.expect(lexer.RBRACE)
+
+	if p.currentToken().Type == lexer.ELSE {
+		p.advance()
+		elseBranch := parseExpression(p, defaultBindingPower)
+		return &ast.IfExpression{
+			Branches: branches,
+			Else:     elseBranch,
+		}
 	}
 
 	return &ast.IfExpression{

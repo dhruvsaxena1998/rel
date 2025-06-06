@@ -1,4 +1,4 @@
 if {
-    @age < 18: 'kid';
-    @age < 55: 'adult;
-} else 'old'
+    @age > 45: 'old';
+    @age > 18: 'adult';
+} else 'kid'

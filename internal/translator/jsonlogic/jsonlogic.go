@@ -53,6 +53,18 @@ func translateExpression(expr ast.Expression) any {
 			elements[i] = translateExpression(element)
 		}
 		return elements
+
+	case *ast.IfExpression:
+		jsonLogicIf := make([]any, 0, len(e.Branches)*2+1)
+		for _, branch := range e.Branches {
+			jsonLogicIf = append(jsonLogicIf, translateExpression(branch.Condition))
+			jsonLogicIf = append(jsonLogicIf, translateExpression(branch.Consequent))
+		}
+		if e.Else != nil {
+			jsonLogicIf = append(jsonLogicIf, translateExpression(e.Else))
+		}
+		return map[string]any{"if": jsonLogicIf}
+
 	default:
 		panic(fmt.Sprintf("cannot translate expression: %T", expr))
 	}
